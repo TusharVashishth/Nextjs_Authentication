@@ -2,8 +2,22 @@ import { connect } from "@/database/mongo.config";
 import Credentials from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import { AuthOptions } from "next-auth";
-import { User } from "@/models/User";
+import { AuthOptions, ISODateString, User } from "next-auth";
+import { User as UserModel } from "@/models/User";
+import { JWT } from "next-auth/jwt";
+
+export type CustomSession = {
+  user?: CustomUser;
+  expires: ISODateString;
+};
+
+export type CustomUser = {
+  id?: string | null;
+  name?: string | null;
+  email?: string | null;
+  role?: string | null;
+  avatar?: string | null;
+};
 
 export const authOptions: AuthOptions = {
   pages: {
@@ -14,16 +28,40 @@ export const authOptions: AuthOptions = {
     async signIn({ user, account, profile, email, credentials }) {
       connect();
       try {
-        const findUser = await User.findOne({ email: user.email });
+        const findUser = await UserModel.findOne({ email: user.email });
         if (findUser) {
           return true;
         }
-        await User.create({ email: user.email, name: user.name });
+        await UserModel.create({
+          email: user.email,
+          name: user.name,
+          role: "User",
+        });
         return true;
       } catch (error) {
         console.log("The error is ", error);
         return false;
       }
+    },
+
+    async jwt({ token, user }: { token: JWT; user: CustomUser }) {
+      if (user) {
+        user.role = user?.role == null ? "User" : user?.role;
+        token.user = user;
+      }
+      return token;
+    },
+    async session({
+      session,
+      token,
+      user,
+    }: {
+      session: CustomSession;
+      token: JWT;
+      user: User;
+    }) {
+      session.user = token.user as CustomUser;
+      return session;
     },
   },
   providers: [
@@ -43,7 +81,7 @@ export const authOptions: AuthOptions = {
         // * Connect to the MongoDb
         console.info("The credentials and req info", credentials, req);
         connect();
-        const user = await User.findOne({ email: credentials?.email });
+        const user = await UserModel.findOne({ email: credentials?.email });
         if (user) {
           return user;
         } else {

@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
+import Toast from "@/components/Toast";
 
 export default function SignInOne() {
   const searchParam = useSearchParams();
@@ -66,6 +67,7 @@ export default function SignInOne() {
 
   return (
     <section>
+      <Toast />
       <div className="grid grid-cols-1 lg:grid-cols-2 h-screen">
         <div className="relative flex items-end px-4 pb-10 pt-60 sm:px-6 sm:pb-16 md:justify-center lg:px-8 lg:pb-24">
           <div className="absolute inset-0">
