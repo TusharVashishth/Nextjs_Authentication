@@ -22,3 +22,16 @@ type AuthInputType = {
   errors: registerErrorType;
   callback: (name: string, value: string) => void;
 };
+
+// * Forgot password payload type
+type ForgotPasswordPayload = {
+  email: string;
+};
+
+// reset password type
+type ResetPasswordPayload = {
+  email: string;
+  signature: string;
+  password: string;
+  password_confirmation: string;
+};

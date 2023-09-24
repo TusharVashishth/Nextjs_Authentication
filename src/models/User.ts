@@ -25,6 +25,11 @@ const userSchema = new Schema({
     type: Schema.Types.String,
     default: "User",
   },
+  password_reset_token: {
+    required: false,
+    type: Schema.Types.String,
+    trim: true,
+  },
 });
 
 export const User = mongoose.models.User || mongoose.model("User", userSchema);
