@@ -149,6 +149,9 @@ export default function SignInOne() {
                       {errors?.password}
                     </span>
                   </div>
+                  <div className="text-right">
+                    <Link href="/forgot-password">Forgot password ?</Link>
+                  </div>
                 </div>
                 <div>
                   <button
