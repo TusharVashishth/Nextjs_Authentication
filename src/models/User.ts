@@ -30,6 +30,15 @@ const userSchema = new Schema({
     type: Schema.Types.String,
     trim: true,
   },
+  magic_link_token: {
+    required: false,
+    type: Schema.Types.String,
+    trim: true,
+  },
+  magic_link_sent_at: {
+    required: false,
+    type: Schema.Types.Date,
+  },
 });
 
 export const User = mongoose.models.User || mongoose.model("User", userSchema);

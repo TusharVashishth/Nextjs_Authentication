@@ -35,3 +35,13 @@ type ResetPasswordPayload = {
   password: string;
   password_confirmation: string;
 };
+
+// * Magic link payload type
+type MagicLinkPayload = {
+  email: string;
+};
+
+type MagicLinkPayloadVerify = {
+  email: string;
+  token: string;
+};

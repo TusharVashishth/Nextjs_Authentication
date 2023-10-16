@@ -79,7 +79,6 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials, req) {
         // * Connect to the MongoDb
-        console.info("The credentials and req info", credentials, req);
         connect();
         const user = await UserModel.findOne({ email: credentials?.email });
         if (user) {
